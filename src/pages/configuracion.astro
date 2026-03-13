@@ -1,0 +1,19 @@
+---
+import SettingsPanel from '@/components/system/SettingsPanel';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getRequestAuth } from '@/lib/auth';
+import { getSettingsPageData } from '@/services/calendar-service';
+
+const auth = getRequestAuth(Astro.locals);
+if (!auth.userId) {
+  return auth.redirectToSignIn();
+}
+
+const initialData = await getSettingsPageData(auth.userId);
+---
+
+<BaseLayout title="Configuración | Calendario emocional" description="Respaldo, restauración y sincronización del calendario emocional.">
+  <main class="mx-auto max-w-[1440px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+    <SettingsPanel client:load initialData={initialData} />
+  </main>
+</BaseLayout>

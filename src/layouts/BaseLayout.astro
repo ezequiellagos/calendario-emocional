@@ -1,0 +1,98 @@
+---
+import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/astro/components';
+
+import '@/styles/globals.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Calendario emocional',
+  description = 'Registra emociones, notas y exporta tu calendario anual emocional.',
+} = Astro.props;
+const enableServiceWorker = import.meta.env.PROD;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#fffaf4" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Calendario" />
+    <link rel="icon" sizes="any" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/pwa-192.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>{title}</title>
+    <script is:inline define:vars={{ enableServiceWorker }}>
+      const appCachePrefixes = ['emotional-calendar-static-', 'emotional-calendar-dynamic-', 'emotional-calendar-api-'];
+      const devCleanupFlag = 'emotional-calendar-dev-cache-reset';
+
+      if ('serviceWorker' in navigator && !enableServiceWorker) {
+        void (async () => {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          const hadRegistrations = registrations.length > 0;
+          if (hadRegistrations) {
+            await Promise.all(registrations.map((registration) => registration.unregister()));
+          }
+
+          let removedCaches = false;
+          if ('caches' in window) {
+            const keys = await caches.keys();
+            const keysToDelete = keys.filter((key) => appCachePrefixes.some((prefix) => key.startsWith(prefix)));
+            removedCaches = keysToDelete.length > 0;
+            await Promise.all(keysToDelete.map((key) => caches.delete(key)));
+          }
+
+          if ((hadRegistrations || removedCaches) && sessionStorage.getItem(devCleanupFlag) !== 'done') {
+            sessionStorage.setItem(devCleanupFlag, 'done');
+            window.location.reload();
+            return;
+          }
+
+          sessionStorage.removeItem(devCleanupFlag);
+        })();
+      }
+    </script>
+  </head>
+  <body>
+    <header class="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <a href="/" class="text-sm font-semibold tracking-[0.24em] text-muted-foreground transition-colors hover:text-foreground">
+        CALENDARIO EMOCIONAL
+      </a>
+      <div class="flex items-center gap-3">
+        <Show when="signed-out">
+          <SignInButton mode="modal" asChild>
+            <button type="button" class="inline-flex h-10 items-center justify-center rounded-full border border-border bg-white/75 px-4 text-sm font-semibold text-foreground transition-all duration-150 hover:-translate-y-0.5 hover:bg-white active:translate-y-px active:scale-[0.98]">
+              Iniciar sesión
+            </button>
+          </SignInButton>
+          <SignUpButton mode="modal" asChild>
+            <button type="button" class="inline-flex h-10 items-center justify-center rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all duration-150 hover:-translate-y-0.5 hover:opacity-95 active:translate-y-px active:scale-[0.98]">
+              Crear cuenta
+            </button>
+          </SignUpButton>
+        </Show>
+        <Show when="signed-in">
+          <UserButton />
+        </Show>
+      </div>
+    </header>
+    <slot />
+    <script is:inline define:vars={{ enableServiceWorker }}>
+      if ('serviceWorker' in navigator && enableServiceWorker) {
+        window.addEventListener('load', () => {
+          void navigator.serviceWorker.register('/sw.js');
+        });
+      }
+    </script>
+  </body>
+</html>

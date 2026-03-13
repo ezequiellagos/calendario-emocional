@@ -1,17 +1,30 @@
 ---
+import CalendarApp from '@/components/calendar/CalendarApp';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Show } from '@clerk/astro/components';
+import { getRequestUserId } from '@/lib/auth';
+import { getCalendarInitialData } from '@/services/calendar-service';
 
+const year = Number.parseInt(Astro.url.searchParams.get('year') ?? `${new Date().getFullYear()}`, 10);
+const userId = getRequestUserId(Astro.locals);
+const initialData = userId ? await getCalendarInitialData(year, userId) : null;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Calendario emocional" description="Calendario anual para registrar emociones y exportar tu historial emocional.">
+  <Show when="signed-out">
+    <main class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+      <section class="surface-panel shadow-soft overflow-hidden rounded-[2rem] border border-white/60 p-8 md:p-10">
+        <div class="max-w-3xl space-y-4">
+          <p class="inline-flex rounded-full bg-primary/12 px-3 py-1 text-xs font-semibold text-primary">Cuenta requerida</p>
+          <h1 class="text-5xl leading-none sm:text-6xl">Tu calendario emocional ahora es por usuario</h1>
+          <p class="text-sm text-muted-foreground sm:text-base">
+            Inicia sesión o crea una cuenta para tener una base SQLite local asociada a tu usuario y sincronización central aislada en Mongo.
+          </p>
+        </div>
+      </section>
+    </main>
+  </Show>
+  <Show when="signed-in">
+    {initialData ? <CalendarApp client:load initialData={initialData} /> : null}
+  </Show>
+</BaseLayout>

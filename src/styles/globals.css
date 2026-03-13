@@ -1,0 +1,96 @@
+@import '@fontsource-variable/manrope';
+@import '@fontsource/cormorant-garamond/700.css';
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: 'Manrope Variable', sans-serif;
+  --font-display: 'Cormorant Garamond', serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.8);
+  --radius-md: calc(var(--radius) * 0.92);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.3);
+}
+
+:root {
+  --radius: 1.15rem;
+  --background: oklch(0.985 0.014 82.18);
+  --foreground: oklch(0.248 0.035 30.41);
+  --card: oklch(0.998 0.008 95.91 / 94%);
+  --card-foreground: oklch(0.248 0.035 30.41);
+  --popover: oklch(0.998 0.008 95.91);
+  --popover-foreground: oklch(0.248 0.035 30.41);
+  --primary: oklch(0.548 0.135 32.35);
+  --primary-foreground: oklch(0.985 0.01 95.21);
+  --secondary: oklch(0.935 0.022 81.45);
+  --secondary-foreground: oklch(0.32 0.048 25.74);
+  --muted: oklch(0.952 0.016 80.02);
+  --muted-foreground: oklch(0.534 0.043 29.88);
+  --accent: oklch(0.902 0.052 137.17);
+  --accent-foreground: oklch(0.266 0.052 141.82);
+  --destructive: oklch(0.61 0.231 28.36);
+  --destructive-foreground: oklch(0.985 0.01 95.21);
+  --border: oklch(0.88 0.018 79.64);
+  --input: oklch(0.89 0.016 81.36);
+  --ring: oklch(0.67 0.117 31.01);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at top left, oklch(0.97 0.05 40.12), transparent 28%),
+      radial-gradient(circle at bottom right, oklch(0.94 0.06 145.41), transparent 24%),
+      linear-gradient(180deg, oklch(0.985 0.014 82.18), oklch(0.972 0.012 85.73));
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .surface-panel {
+    background: color-mix(in oklab, var(--card) 88%, white 12%);
+    backdrop-filter: blur(18px);
+  }
+
+  .shadow-soft {
+    box-shadow: 0 20px 60px rgba(87, 47, 20, 0.08);
+  }
+}

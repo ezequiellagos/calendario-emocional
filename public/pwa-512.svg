@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Calendario emocional">
+  <rect width="512" height="512" rx="92" fill="#fffaf4"/>
+  <rect x="46" y="46" width="420" height="420" rx="78" fill="url(#surface)" stroke="#8f5d3d" stroke-width="10"/>
+  <rect x="46" y="46" width="420" height="96" rx="78" fill="#8f5d3d"/>
+  <circle cx="154" cy="64" r="20" fill="#fffaf4"/>
+  <circle cx="358" cy="64" r="20" fill="#fffaf4"/>
+  <circle cx="154" cy="226" r="38" fill="#f59e0b"/>
+  <circle cx="256" cy="226" r="38" fill="#ec4899"/>
+  <circle cx="358" cy="226" r="38" fill="#3b82f6"/>
+  <circle cx="154" cy="328" r="38" fill="#22c55e"/>
+  <circle cx="256" cy="328" r="38" fill="#0ea5e9"/>
+  <circle cx="358" cy="328" r="38" fill="#ef4444"/>
+  <defs>
+    <linearGradient id="surface" x1="46" y1="46" x2="466" y2="466" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff3e8"/>
+      <stop offset="1" stop-color="#e9f8ec"/>
+    </linearGradient>
+  </defs>
+</svg>

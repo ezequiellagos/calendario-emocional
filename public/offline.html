@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fffaf4" />
+    <title>Sin conexión | Calendario emocional</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --background: #fffaf4;
+        --surface: rgba(255, 255, 255, 0.82);
+        --text: #3d2a1f;
+        --muted: #6e5c4e;
+        --primary: #8f5d3d;
+        --border: #ead8ca;
+        --accent: #e9f8ec;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, #fff1e5, transparent 30%),
+          radial-gradient(circle at bottom right, #edf9ef, transparent 28%),
+          linear-gradient(180deg, #fffaf4, #f8f2eb);
+        padding: 24px;
+      }
+
+      main {
+        width: min(720px, 100%);
+        border: 1px solid var(--border);
+        border-radius: 32px;
+        background: var(--surface);
+        backdrop-filter: blur(18px);
+        box-shadow: 0 20px 60px rgba(87, 47, 20, 0.08);
+        padding: 32px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(143, 93, 61, 0.12);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 18px 0 10px;
+        font-family: Georgia, serif;
+        font-size: clamp(2.3rem, 6vw, 4.5rem);
+        line-height: 0.95;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+        max-width: 56ch;
+      }
+
+      .tips {
+        margin-top: 24px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .tip {
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.78);
+        padding: 16px 18px;
+      }
+
+      .tip strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--text);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      a, button {
+        appearance: none;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 12px 18px;
+        text-decoration: none;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      a.primary, button.primary {
+        border-color: transparent;
+        background: var(--primary);
+        color: #fffaf4;
+      }
+
+      a.secondary, button.secondary {
+        background: white;
+        color: var(--text);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <span class="eyebrow">Modo offline</span>
+      <h1>La app sigue contigo aunque no haya red.</h1>
+      <p>
+        No hay conexión disponible en este momento. Si ya abriste antes el calendario, tus datos locales y tus cambios pendientes seguirán guardándose para sincronizarse cuando vuelva la conexión.
+      </p>
+
+      <section class="tips" aria-label="Consejos offline">
+        <div class="tip">
+          <strong>Entradas y emociones</strong>
+          Los cambios recientes se guardan en SQLite local y en la cola offline del navegador.
+        </div>
+        <div class="tip">
+          <strong>Sincronización</strong>
+          Cuando la conexión vuelva, la app intentará enviar y traer cambios automáticamente.
+        </div>
+        <div class="tip">
+          <strong>Si esta página aparece al abrir por primera vez</strong>
+          Necesitas cargar antes la app online para que el shell completo quede cacheado.
+        </div>
+      </section>
+
+      <div class="actions">
+        <a class="primary" href="/">Intentar de nuevo</a>
+        <button class="secondary" type="button" onclick="location.reload()">Recargar</button>
+      </div>
+    </main>
+  </body>
+</html>

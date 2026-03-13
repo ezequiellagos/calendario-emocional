@@ -1,0 +1,59 @@
+{
+  "id": "/",
+  "name": "Calendario emocional",
+  "short_name": "Calendario",
+  "description": "Calendario emocional anual con trabajo offline, exportacion y sincronizacion opcional.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display_override": ["standalone", "browser"],
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#fffaf4",
+  "theme_color": "#fffaf4",
+  "categories": ["health", "lifestyle", "productivity"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/pwa-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Abrir calendario",
+      "short_name": "Calendario",
+      "url": "/"
+    },
+    {
+      "name": "Configuración",
+      "short_name": "Config",
+      "url": "/configuracion"
+    },
+    {
+      "name": "Estado de sincronización",
+      "short_name": "Estado",
+      "url": "/estado"
+    }
+  ]
+}
