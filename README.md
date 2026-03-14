@@ -125,7 +125,7 @@ npm run build
 docker compose up --build
 ```
 
-La aplicacion quedara disponible en `http://localhost:4321`, SQLite persistira en el volumen `calendario_emocional_data` y MongoDB en `calendario_emocional_mongo`.
+La aplicacion quedara disponible en `http://localhost:4321` y SQLite persistira en el volumen `calendario_emocional_data`.
 
 ## Despliegue en VPS con Docker
 
@@ -133,9 +133,9 @@ La configuracion Docker esta orientada a un VPS con una sola instancia de aplica
 
 - La imagen usa `node:24-trixie-slim` tanto para build como para runtime para reducir la superficie base del contenedor.
 - El contenedor arranca directamente con `node dist/server/entry.mjs`.
+- Un sidecar `mongo-keepalive` ejecuta un `ping` periodico contra el Mongo remoto para evitar pausas por inactividad en tiers gratuitos.
 - El runtime corre como usuario `node`, no como root.
 - SQLite persiste en un volumen Docker montado en `/app/data`.
-- Mongo queda en la red interna de Compose y no publica `27017` hacia fuera por defecto.
 - El build no copia `.env` al contexto de Docker; las variables deben inyectarse en runtime.
 
 Variables minimas recomendadas para el VPS:
@@ -145,6 +145,7 @@ Variables minimas recomendadas para el VPS:
 - `MONGODB_URI` si no usaras el servicio `mongo` del propio compose
 - `MONGODB_DB_NAME`
 - `MONGODB_COLLECTION_PREFIX`
+- `MONGODB_KEEPALIVE_INTERVAL_SECONDS` si quieres cambiar la frecuencia del ping al Mongo remoto. Por defecto `86400`.
 - `APP_BIND_ADDRESS` si quieres limitar el puerto publicado solo a `127.0.0.1`
 - `APP_PORT` si quieres publicar un puerto distinto en el host
 

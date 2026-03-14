@@ -33,6 +33,27 @@ services:
       - default
       - npm_default
 
+  mongo-keepalive:
+    image: mongo:8
+    container_name: calendario-emocional-mongo-keepalive
+    environment:
+      MONGODB_URI: ${MONGODB_URI}
+      MONGODB_DB_NAME: ${MONGODB_DB_NAME:-emotional-calendar}
+      MONGODB_KEEPALIVE_INTERVAL_SECONDS: ${MONGODB_KEEPALIVE_INTERVAL_SECONDS:-86400}
+    command:
+      - /bin/sh
+      - -c
+      - |
+          interval="$${MONGODB_KEEPALIVE_INTERVAL_SECONDS:-86400}"
+          while true; do
+            date -u +"[%Y-%m-%dT%H:%M:%SZ] MongoDB keepalive ping"
+            mongosh "$${MONGODB_URI}" --quiet --eval "db.getSiblingDB('$${MONGODB_DB_NAME}').runCommand({ ping: 1 })" || true
+            sleep "$${interval}"
+          done
+    restart: unless-stopped
+    networks:
+      - default
+
 volumes:
   calendario_emocional_data:
 
