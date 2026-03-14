@@ -51,3 +51,7 @@ services:
 volumes:
   calendario_emocional_data:
   calendario_emocional_mongo:
+
+networks:
+  npm_default:
+    external: true
