@@ -1,9 +1,9 @@
-const STATIC_CACHE = 'emotional-calendar-static-v2';
-const DYNAMIC_CACHE = 'emotional-calendar-dynamic-v2';
-const API_CACHE = 'emotional-calendar-api-v2';
+const STATIC_CACHE = 'emotional-calendar-static-v3';
+const DYNAMIC_CACHE = 'emotional-calendar-dynamic-v3';
+const API_CACHE = 'emotional-calendar-api-v3';
 
 const OFFLINE_DOCUMENT = '/offline.html';
-const STATIC_ASSETS = ['/', OFFLINE_DOCUMENT, '/manifest.webmanifest', '/favicon.ico', '/favicon.svg', '/pwa-192.svg', '/pwa-512.svg', '/pwa-maskable.svg'];
+const STATIC_ASSETS = [OFFLINE_DOCUMENT, '/manifest.webmanifest', '/favicon.ico', '/favicon.svg', '/pwa-192.svg', '/pwa-512.svg', '/pwa-maskable.svg'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(STATIC_CACHE).then((cache) => cache.addAll(STATIC_ASSETS)));
@@ -37,20 +37,9 @@ async function staleWhileRevalidate(request, cacheName) {
 }
 
 async function networkWithOfflineFallback(request) {
-  const cache = await caches.open(DYNAMIC_CACHE);
-
   try {
-    const response = await fetch(request);
-    if (response.ok) {
-      cache.put(request, response.clone());
-    }
-    return response;
+    return await fetch(request);
   } catch {
-    const cachedResponse = await cache.match(request);
-    if (cachedResponse) {
-      return cachedResponse;
-    }
-
     const offlineResponse = await caches.match(OFFLINE_DOCUMENT);
     if (offlineResponse) {
       return offlineResponse;
@@ -95,13 +84,18 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  if (url.pathname.startsWith('/_astro/') || url.pathname.startsWith('/chunks/')) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
   if (request.mode === 'navigate' || request.destination === 'document') {
     event.respondWith(networkWithOfflineFallback(request));
     return;
   }
 
   if (request.destination === 'script' || request.destination === 'style') {
-    event.respondWith(staleWhileRevalidate(request, DYNAMIC_CACHE));
+    event.respondWith(fetch(request));
     return;
   }
 
